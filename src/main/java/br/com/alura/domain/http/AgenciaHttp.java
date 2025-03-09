@@ -1,4 +1,6 @@
-package br.com.alura.service.http;
+package br.com.alura.domain.http;
+
+import br.com.alura.service.http.SituacaoCadastral;
 
 public class AgenciaHttp {
     private String nome;
