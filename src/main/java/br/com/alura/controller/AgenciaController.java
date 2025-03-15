@@ -1,6 +1,5 @@
 package br.com.alura.controller;
 
-
 import br.com.alura.domain.Agencia;
 import br.com.alura.service.http.AgenciaService;
 import jakarta.ws.rs.Path;

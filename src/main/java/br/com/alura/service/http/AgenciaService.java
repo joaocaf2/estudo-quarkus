@@ -4,7 +4,6 @@ import br.com.alura.domain.Agencia;
 import br.com.alura.exception.AgenciaNaoAtivaOUnaoEncontradaException;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-
 import java.util.ArrayList;
 import java.util.List;
 
