@@ -35,6 +35,7 @@ public class AgenciaController {
 
     @DELETE
     @Path("{id}")
+    @Transactional
     public RestResponse<Agencia> deletar(Long id) {
         this.agenciaService.deletar(id);
 
