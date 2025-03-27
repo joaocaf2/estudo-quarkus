@@ -3,50 +3,46 @@ package br.com.alura.service.http;
 import br.com.alura.domain.Agencia;
 import br.com.alura.exception.AgenciaNaoAtivaException;
 import br.com.alura.exception.AgenciaNaoEncontradaException;
+import br.com.alura.repository.AgenciaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import java.util.ArrayList;
-import java.util.List;
 
 @ApplicationScoped
 public class AgenciaService {
 
+    private final AgenciaRepository agenciaRepository;
+
     @RestClient
     private SituacaoCadastralHttpService situacaoCadastralHttpService;
 
-    private List<Agencia> agencias = new ArrayList<>();
+    AgenciaService(AgenciaRepository agenciaRepository) {
+        this.agenciaRepository = agenciaRepository;
+    }
 
     public void cadastrar(Agencia agencia) {
-        var agenciaBuscada = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
+        var agenciaHttpBuscada = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
 
-        if (agenciaBuscada.isEmpty()) {
-            throw new AgenciaNaoEncontradaException();
+        if (!agenciaHttpBuscada.isPresent()) {
+            throw new AgenciaNaoEncontradaException("Agência não encontrada");
         }
 
-        if (!agencia.getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
-            throw new AgenciaNaoAtivaException();
+        if (!agenciaHttpBuscada.get().getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
+            throw new AgenciaNaoAtivaException("Agência não ativa no momento");
         }
 
-        agencias.add(agenciaBuscada.get());
+        agenciaRepository.persist(agencia);
     }
 
-    public Agencia buscarPorId(Integer id) {
-        return agencias
-                .stream()
-                .filter(agencia -> agencia.getId().equals(id))
-                .toList()
-                .stream()
-                .findFirst()
-                .get();
+    public Agencia buscarPorId(Long id) {
+        return agenciaRepository.findById(id);
     }
 
-    public void deletar(Integer id) {
-        agencias.removeIf(agencia -> agencia.getId().equals(id));
+    public void deletar(Long id) {
+        agenciaRepository.deleteById(id);
     }
 
     public void alterar(Agencia agencia) {
-        deletar(agencia.getId());
-        cadastrar(agencia);
+        agenciaRepository.update("nome = ?1, razaoSocial = ?2, cnpj = ?3 where id = ?4", agencia.getNome(), agencia.getRazaoSocial(), agencia.getCnpj(), agencia.getId());
     }
 
 }

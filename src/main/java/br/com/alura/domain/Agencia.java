@@ -1,6 +1,5 @@
 package br.com.alura.domain;
 
-import br.com.alura.service.http.SituacaoCadastral;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,11 +14,9 @@ public class Agencia {
 
     private String cnpj;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
-
-    private SituacaoCadastral situacaoCadastral;
 
     public Integer getId() {
         return id;
@@ -33,8 +30,24 @@ public class Agencia {
         return cnpj;
     }
 
-    public SituacaoCadastral getSituacaoCadastral() {
-        return situacaoCadastral;
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
 }

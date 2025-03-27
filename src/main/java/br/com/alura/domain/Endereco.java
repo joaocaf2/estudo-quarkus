@@ -16,6 +16,26 @@ public class Endereco {
     private String complemento;
     private Integer numero;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
     public Integer getId() {
         return id;
     }

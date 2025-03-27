@@ -17,7 +17,7 @@ public class AgenciaHttp {
     }
 
     public SituacaoCadastral getSituacaoCadastral() {
-        return situacaoCadastral;
+        return this.situacaoCadastral;
     }
 
 }
