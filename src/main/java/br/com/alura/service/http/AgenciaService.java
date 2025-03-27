@@ -22,7 +22,7 @@ public class AgenciaService {
     public void cadastrar(Agencia agencia) {
         var agenciaHttpBuscada = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
 
-        if (!agenciaHttpBuscada.isPresent()) {
+        if (agenciaHttpBuscada.isEmpty()) {
             throw new AgenciaNaoEncontradaException("Agência não encontrada");
         }
 
