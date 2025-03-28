@@ -11,10 +11,24 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String rua;
     private String logradouro;
     private String complemento;
     private Integer numero;
+
+    public Endereco() {
+
+    }
+
+    public Endereco(Integer id, String rua, String logradouro, String complemento, Integer numero) {
+        this.id = id;
+        this.rua = rua;
+        this.logradouro = logradouro;
+        this.complemento = complemento;
+        this.numero = numero;
+    }
+
 
     public void setId(Integer id) {
         this.id = id;
@@ -37,22 +51,22 @@ public class Endereco {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public String getRua() {
-        return rua;
+        return this.rua;
     }
 
     public String getLogradouro() {
-        return logradouro;
+        return this.logradouro;
     }
 
     public String getComplemento() {
-        return complemento;
+        return this.complemento;
     }
 
     public Integer getNumero() {
-        return numero;
+        return this.numero;
     }
 }
