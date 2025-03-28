@@ -7,6 +7,7 @@ public class Agencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
 
     @Column(name = "razao_social")
@@ -18,23 +19,15 @@ public class Agencia {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    public Integer getId() {
-        return id;
+    public Agencia() {
+
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public String getRazaoSocial() {
-        return razaoSocial;
-    }
-
-    public void setEndereco(Endereco endereco) {
+    public Agencia(Integer id, String nome, String razaoSocial, String cnpj, Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.razaoSocial = razaoSocial;
+        this.cnpj = cnpj;
         this.endereco = endereco;
     }
 
@@ -48,6 +41,26 @@ public class Agencia {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getRazaoSocial() {
+        return this.razaoSocial;
+    }
+
+    public String getCnpj() {
+        return this.cnpj;
     }
 
 }
