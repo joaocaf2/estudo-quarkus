@@ -1,9 +1,10 @@
-package br.com.alura.service.http;
+package br.com.alura.service;
 
 import br.com.alura.domain.Agencia;
 import br.com.alura.exception.AgenciaNaoAtivaException;
 import br.com.alura.exception.AgenciaNaoEncontradaException;
 import br.com.alura.repository.AgenciaRepository;
+import br.com.alura.service.http.SituacaoCadastral;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -22,11 +23,11 @@ public class AgenciaService {
     public void cadastrar(Agencia agencia) {
         var agenciaHttpBuscada = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
 
-        if (agenciaHttpBuscada.isEmpty()) {
+        if (agenciaHttpBuscada == null) {
             throw new AgenciaNaoEncontradaException("Agência não encontrada");
         }
 
-        if (!agenciaHttpBuscada.get().getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
+        if (!agenciaHttpBuscada.getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
             throw new AgenciaNaoAtivaException("Agência não ativa no momento");
         }
 
