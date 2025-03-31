@@ -31,14 +31,28 @@ public class AgenciaServiceTest {
     @Inject
     private AgenciaService agenciaService;
 
-    @DisplayName("Deve não cadastrar quando cliente retornar null")
+    @DisplayName("Não deve cadastrar quando cliente retornar null")
     @Test
-    public void deveNaoCadastrarQuandoClienteRetornarNull() {
+    public void naoDeveCadastrarQuandoClienteRetornarNull() {
         var agencia = criarAgencia();
 
-        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(any())).thenReturn(null);
+        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(any()))
+                .thenReturn(null);
 
         Assertions.assertThrows(AgenciaNaoEncontradaException.class, () -> agenciaService.cadastrar(agencia));
+
+        Mockito.verify(agenciaRepository, Mockito.never()).persist(agencia);
+    }
+
+    @DisplayName("Não deve cadastrar agência inativa")
+    @Test
+    public void naoDeveCadastrarAgenciaInativa() {
+        var agencia = criarAgencia();
+
+        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(anyString()))
+                .thenReturn(criarAgenciaHttp("INATIVO"));
+
+        Assertions.assertThrows(AgenciaNaoAtivaException.class, () -> agenciaService.cadastrar(agencia));
 
         Mockito.verify(agenciaRepository, Mockito.never()).persist(agencia);
     }
@@ -47,23 +61,12 @@ public class AgenciaServiceTest {
     public void deveCadastrarQuandoClientRetornarSituacaoCadastralAtiva() {
         var agencia = criarAgencia();
 
-        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(anyString())).thenReturn(criarAgenciaHttp("ATIVO"));
+        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(anyString()))
+                .thenReturn(criarAgenciaHttp("ATIVO"));
 
         agenciaService.cadastrar(agencia);
 
         Mockito.verify(agenciaRepository).persist(agencia);
-    }
-
-    @DisplayName("Não deve cadastrar agência inativa")
-    @Test
-    public void naoDeveCadastrarAgenciaInativa() {
-        var agencia = criarAgencia();
-
-        Mockito.when(situacaoCadastralHttpService.buscarPorCnpj(anyString())).thenReturn(criarAgenciaHttp("INATIVO"));
-
-        Assertions.assertThrows(AgenciaNaoAtivaException.class, () -> agenciaService.cadastrar(agencia));
-
-        Mockito.verify(agenciaRepository, Mockito.never()).persist(agencia);
     }
 
     private Agencia criarAgencia() {
