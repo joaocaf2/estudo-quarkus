@@ -1,6 +1,6 @@
 services:
   banking-service:
-    image: pc/banking-service:1.0.0-SNAPSHOT
+    image: ferreira80j/banking-service:v3
     container_name: banking-service-container
     environment:
       - QUARKUS_CLIENT_HTTP=host.docker.internal
@@ -24,3 +24,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
      - 5433:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  postgres_data:
+    driver: local
